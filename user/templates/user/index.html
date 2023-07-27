@@ -60,11 +60,8 @@
 </head>
 <body onload="load()">
     <script>
-<!--        function load() {-->
-<!--            alert("Registration successful");-->
-<!--        }-->
     </script>
-    <a style="height:76px" href="{% url 'form' %}"><button class="button" style="--c: #373B44;--b: 5px;--s:12px">Add new</button></a>
+    <a style="height:76px" href="{% url 'add-user' %}"><button class="button" style="--c: #373B44;--b: 5px;--s:12px">Add new</button></a>
     <table>
         <tr>
             <th>Name</th>
@@ -79,6 +76,9 @@
             <td>{{i.email}}</td>
             <td>{{i.phone_number}}</td>
             <td>{{i.address}}</td>
+            <td><a href="{% url 'delete' i.id %}" ><button class="btn">Delete</button></a></td>
+            <td><a href="{% url 'update' i.id %}" ><button class="btn">Update</button></a></td>
+
         </tr>
         {% endfor %}
 
