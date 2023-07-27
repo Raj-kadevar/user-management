@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+<title>SignUp Form</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files-->
+<!-- //Custom Theme     files-->
+<!-- web font-->
+<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+<!-- //web font-->
+<link href="{%static 'css/style.css'%}" rel="stylesheet" type="text/css" media="all" />
+
+</head>
+<body>
+
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<h1>Form</h1>
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<form method="post">
+					{% csrf_token %}
+					name:
+					<h3>{{form.name}}</h3></br>
+					<h2 style="color:red">{{err.name}}</h2>
+					Email:
+					<h3>{{form.email}}</h3></br>
+					<h2 style="color:red">{{err.email}}</h2>
+					password:
+					<input type="password" name='{{form.password.html_name}}' required=""/></br>
+					<h2 style="color:red">{{err.password}}</h2>
+					number:
+					<input type="text" name="{{form.phone_number.html_name}}" required=""/></br>
+					<h2 style="color:red">{{err.phone_number}}</h2>
+					Address:
+					<h3>{{form.address}}</h3></br>
+					<input type="submit" value="Submit">
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
