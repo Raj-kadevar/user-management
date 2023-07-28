@@ -17,7 +17,6 @@
 </head>
 <body>
 
-	<!-- main -->
 	<div class="main-w3layouts wrapper">
 		<h1>Form</h1>
 		<div class="main-agileinfo">
@@ -25,7 +24,7 @@
 				<form method="post">
 					{% csrf_token %}
 					name:
-					<h3>{{form.name}}</h3></br>
+					<h3>{{form.username}}</h3></br>
 					<h2 style="color:red">{{err.name}}</h2>
 					Email:
 					<h3>{{form.email}}</h3></br>
@@ -33,6 +32,9 @@
 					password:
 					<input type="password" name='{{form.password.html_name}}' required=""/></br>
 					<h2 style="color:red">{{err.password}}</h2>
+					confirm_password
+					<input type="password" name='{{form.confirm_password.html_name}}' required=""/></br>
+					<h2 style="color:red">{{err.confirm_password}}</h2>
 					number:
 					<input type="text" name="{{form.phone_number.html_name}}" required=""/></br>
 					<h2 style="color:red">{{err.phone_number}}</h2>

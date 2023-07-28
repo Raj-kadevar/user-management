@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import User
-# Register your models here.
+from .models import UserEmployee
 
-@admin.register(User)
+
+@admin.register(UserEmployee)
 class Users(admin.ModelAdmin):
-    list_display = ("id", "name", "password", "email", "phone_number", "address")
+    list_display = ("id", "username", "password", "email", "phone_number", "address")

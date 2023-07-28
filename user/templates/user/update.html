@@ -7,9 +7,9 @@
 <body>
 
 
-    <form action="{% url 'updater' key.id %}" method="POST">
+    <form action="{% url 'update' key.id %}" method="POST">
      {% csrf_token %}
-     name:<input type="text" value="{{key.name}} " name="name"><br><br>
+     name:<input type="text" value="{{key.username}} " name="name"><br><br>
      email:<input type="email" value="{{key.email}}" name="email"><br><br>
      phone_number:<input type="text" value="{{key.phone_number}} " name="phone_number"><br><br>
      Address:<input type="text" value="{{key.address}}" name="address"><br><br>
