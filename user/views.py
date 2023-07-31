@@ -1,5 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from user.forms import RegistrationForm, UpdateForm
@@ -30,7 +30,10 @@ def index(request):
 
 
 def delete(request, id):
-    data = UserEmployee.objects.get(id=id)
+    try:
+        data = UserEmployee.objects.get(id=id)
+    except ObjectDoesNotExist as e:
+        return HttpResponse("<h2>404 page not found</h2>")
     data.delete()
     return redirect("index")
 
@@ -39,7 +42,7 @@ def update(request, id):
     try:
         get_user = UserEmployee.objects.get(id=id)
     except ObjectDoesNotExist as e:
-        return redirect("index")
+        return HttpResponse("<h2>404 page not found</h2>")
 
     if request.method == "POST":
         user = UpdateForm(request.POST, instance=get_user)
