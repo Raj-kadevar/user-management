@@ -5,14 +5,13 @@
     <title>update</title>
 </head>
 <body>
-
-
-    <form action="{% url 'update' key.id %}" method="POST">
+        <form action="{% url 'update' user_information.id %}" method="POST">
      {% csrf_token %}
-     name:<input type="text" value="{{key.username}} " name="name"><br><br>
-     email:<input type="email" value="{{key.email}}" name="email"><br><br>
-     phone_number:<input type="text" value="{{key.phone_number}} " name="phone_number"><br><br>
-     Address:<input type="text" value="{{key.address}}" name="address"><br><br>
+            {{ form.as_p }}
+     name:<input type="text" value="{{user_information.username}} " name="username"><br><br>
+     email:<input type="email" value="{{user_information.email}}" name="email"><br><br>
+     phone_number:<input type="text" value="{{user_information.phone_number}} " name="phone_number"><br><br>
+     Address:<input type="text" value="{{user_information.address}}" name="address"><br><br>
         <input type="submit" value="submit">
     </form>
 </body>

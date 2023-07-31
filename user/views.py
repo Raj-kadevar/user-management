@@ -1,37 +1,32 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
-from user.forms import Registration
+from user.forms import RegistrationForm, UpdateForm
 from user.models import UserEmployee
 
 
 class UserView(CreateView):
-    def get_queryset(self):
-        return UserEmployee.objects.all()
 
-    def get_context_data(self, **kwargs):
-        form = Registration
-        return {"form": form}
-
-    def get_template_names(self):
-        return "user/form.html"
+    model = UserEmployee
+    form_class = RegistrationForm
+    template_name = 'user/form.html'
 
     def post(self, request, *args, **kwargs):
-        user = Registration(request.POST)
+        user = RegistrationForm(request.POST)
         if user.is_valid():
             user_data = user.save()
             user_data.set_password(user_data.password)
             user_data.save()
         else:
-            form = Registration()
             error = user.errors
-            return render(request, "user/form.html", {"err": error, "form": user})
+            return render(request, "user/form.html", {"errors": error, "form": user})
         return HttpResponseRedirect("index")
 
 
 def index(request):
     data = UserEmployee.objects.all()
-    return render(request, "user/index.html", {"obj": data})
+    return render(request, "user/index.html", {"users": data})
 
 
 def delete(request, id):
@@ -41,17 +36,14 @@ def delete(request, id):
 
 
 def update(request, id):
-    get_user = UserEmployee.objects.get(id=id)
-    if request.method == "POST":
-        name = request.POST["name"]
-        email = request.POST["email"]
-        phone_num = request.POST["phone_number"]
-        address = request.POST["address"]
+    try:
         get_user = UserEmployee.objects.get(id=id)
-        get_user.username = name
-        get_user.email = email
-        get_user.phone_number = phone_num
-        get_user.address = address
-        get_user.save()
+    except ObjectDoesNotExist as e:
         return redirect("index")
-    return render(request, "user/update.html", {"key": get_user})
+
+    if request.method == "POST":
+        user = UpdateForm(request.POST, instance=get_user)
+        if user.is_valid():
+            user.save()
+            return redirect("index")
+    return render(request, "user/update.html", {"user_information": get_user})

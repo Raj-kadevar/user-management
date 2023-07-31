@@ -25,10 +25,10 @@
 					{% csrf_token %}
 					name:
 					<h3>{{form.username}}</h3></br>
-					<h2 style="color:red">{{err.name}}</h2>
+					<h2 style="color:red">{{errors.name}}</h2>
 					Email:
 					<h3>{{form.email}}</h3></br>
-					<h2 style="color:red">{{err.email}}</h2>
+					<h2 style="color:red">{{errors.email}}</h2>
 					password:
 					<input type="password" name='{{form.password.html_name}}' required=""/></br>
 					<h2 style="color:red">{{err.password}}</h2>

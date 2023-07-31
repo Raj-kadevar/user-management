@@ -2,7 +2,7 @@ from django import forms
 from user.models import UserEmployee
 
 
-class Registration(forms.ModelForm):
+class RegistrationForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
@@ -32,3 +32,8 @@ class Registration(forms.ModelForm):
             if UserEmployee.objects.filter(phone_number=number).exists():
                 raise forms.ValidationError("This number is already taken.")
         return number
+
+class UpdateForm(forms.ModelForm):
+    class Meta:
+        model = UserEmployee
+        fields = ["username", "email", "phone_number", "address"]
