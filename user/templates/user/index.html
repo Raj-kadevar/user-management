@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+
+    <link href="{%static 'css/index.css'%}" rel="stylesheet" type="text/css" media="all" />
+    <meta charset="UTF-8">
+    <title>Data</title>
+</head>
+<body>
+    <a style="height:76px" href="{% url 'add-user' %}"><button class="button" style="--c: #373B44;--b: 5px;--s:12px">Add new</button></a>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>email</th>
+            <th>phone_number</th>
+            <th>address</th>
+            <th>DELETE</th>
+            <th>UPDATE</th>
+        </tr>
+
+        {% for user in users %}
+        <tr>
+            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.phone_number}}</td>
+            <td>{{user.address}}</td>
+            <td><a href="{% url 'delete' user.id %}" ><button class="btn">Delete</button></a></td>
+            <td><a href="{% url 'update' user.id %}" ><button class="btn">Update</button></a></td>
+        </tr>
+        {% endfor %}
+
+
+    </table>
+</body>
+</html>
