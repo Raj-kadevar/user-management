@@ -130,15 +130,12 @@ img {
 
 /*-- end reset --*/
 body {
-  background: #76b852;
+  background: black;
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(to top, #76b852, #8DC26F);
-  background: -moz-linear-gradient(to top, #76b852, #8DC26F);
-  background: -o-linear-gradient(to top, #76b852, #8DC26F);
-  background: linear-gradient(to top, #76b852, #8DC26F);
   background-size: cover;
   background-attachment: fixed;
   font-family: 'Roboto', sans-serif;
+  color:white;
 }
 
 h1 {
@@ -230,7 +227,7 @@ input.email, input.text, input.text.w3lpass {
 input[type="submit"] {
   font-size: .9em;
   color: #fff;
-  background: #76b852;
+  background: black;
   outline: none;
   border: 1px solid #76b852;
   cursor: pointer;
@@ -247,7 +244,8 @@ input[type="submit"]:hover {
   -o-transition: .5s all;
   -ms-transition: .5s all;
   transition: .5s all;
-  background: #8DC26F;
+  background: white;
+  color:black;
 }
 
 .agileits-top p {

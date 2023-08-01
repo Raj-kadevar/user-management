@@ -40,6 +40,12 @@
 					<h2 style="color:red">{{err.phone_number}}</h2>
 					Address:
 					<h3>{{form.address}}</h3></br>
+
+					<div class="links">
+						Already have an account -->
+              			<a href="{% url 'login' %}">Signin</a>
+            		</div>
+
 					<input type="submit" value="Submit">
 				</form>
 			</div>
