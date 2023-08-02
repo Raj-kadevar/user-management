@@ -18,10 +18,11 @@ class UserView(CreateView):
             user_data = user.save()
             user_data.set_password(user_data.password)
             user_data.save()
+            return render(request, "book/login.html")
+
         else:
             error = user.errors
             return render(request, "user/form.html", {"errors": error, "form": user})
-        return HttpResponseRedirect("index")
 
 
 def index(request):

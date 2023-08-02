@@ -1,0 +1,53 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <title>CodePen - Animated Login Form using Html &amp; CSS Only</title>
+  <link rel="stylesheet" href="{%static 'css/login.css' %}" type="text/css" media="all">
+
+</head>
+
+ <body>
+
+   <section>
+
+     <div class="signin">
+
+      <div class="content">
+
+        <h2>Login</h2>
+
+        <div class="form">
+
+          <form action="{% url 'index' %}" method="POST">
+              {% csrf_token %}
+            <div class="inputBox">
+             <input type="text" name="username" required> <i>Username</i></br>
+            </div>
+            <div class="inputBox">
+             <input type="password" name="password" required> <i>Password</i>
+            </div>
+              <h3>{{errors}}</h3>
+            </br><div class="links" >
+            <a href="{% url 'add-user' %}">Signup</a>
+            </div>
+
+            <div class="inputBox">
+             </br> <input type="submit" value="Login">
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+
+     </div>
+
+   </section>
+
+ </body>
+
+</html>
