@@ -5,10 +5,7 @@ from django.views import View
 
 login_status = 0
 
-# def login(request):
-#     return render(request,"book/login.html")
-
-class MyView(View):
+class LoginView(View):
     def get(self, request, *args, **kwargs):
         return render(request, "book/login.html")
     def post(self, request, *args, **kwargs):
