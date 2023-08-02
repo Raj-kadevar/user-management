@@ -21,15 +21,15 @@
 
         <div class="form">
 
-          <form method="POST">
+          <form action="{% url 'index' %}" method="POST">
               {% csrf_token %}
             <div class="inputBox">
-             <input type="text" required> <i>Username</i></br>
+             <input type="text" name="username" required> <i>Username</i></br>
             </div>
             <div class="inputBox">
-             <input type="password" required> <i>Password</i>
+             <input type="password" name="password" required> <i>Password</i>
             </div>
-
+              <h3>{{errors}}</h3>
             </br><div class="links" >
             <a href="{% url 'add-user' %}">Signup</a>
             </div>

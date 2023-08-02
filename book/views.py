@@ -1,11 +1,17 @@
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.views import LoginView
-from django.contrib import messages
+from django.contrib.auth import authenticate
+from django.shortcuts import render
 
 
-# Create your views here.
+def login(request):
+    return render(request,"book/login.html")
 
-class MyLoginView(LoginView):
-    template_name = "book/login.html"
-    authentication_form = AuthenticationForm
-    LOGIN_REDIRECT_URL = 'index'
+def index(request):
+    username = request.POST["username"]
+    password = request.POST["password"]
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+        print("success")
+        return render(request,"book/index.html")
+    else:
+        error = "Username or password incorrect"
+        return render(request, "book/login.html",{"errors":error})

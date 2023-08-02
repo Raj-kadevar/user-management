@@ -1,8 +1,8 @@
 from django.urls import path
-from book.views import MyLoginView
-from user import views
+from book import views
+from user import views as user
 urlpatterns = [
-    path('',MyLoginView.as_view(),name="login"),
-    path('index/',views.UserView.as_view(),name="index"),
-    path('registration_form/',views.UserView.as_view(),name="add-user"),
+    path('',views.login, name="login"),
+    path('index/',views.index,name="index"),
+    path('registration_form/',user.UserView.as_view(),name="add-user"),
 ]
