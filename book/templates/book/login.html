@@ -21,7 +21,7 @@
 
         <div class="form">
 
-          <form action="{% url 'index' %}" method="POST">
+          <form method="POST">
               {% csrf_token %}
             <div class="inputBox">
              <input type="text" name="username" required> <i>Username</i></br>
