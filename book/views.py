@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.views import View
@@ -24,3 +24,6 @@ def index(request):
     else:
         return redirect("login")
 
+def on_logout(request):
+    logout(request)
+    return redirect("login")
