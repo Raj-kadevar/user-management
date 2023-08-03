@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect
 from django.views import View
@@ -12,14 +12,14 @@ class LoginView(View):
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            request.session['username'] = username
+            login(request, user)
             return HttpResponseRedirect("index")
         else:
             error = "Username or password incorrect"
             return render(request, "book/login.html", {"errors": error})
 
 def index(request):
-    if 'username' in request.session:
+    if request.user.is_authenticated :
         return render(request, "book/index.html")
     else:
         return redirect("login")
