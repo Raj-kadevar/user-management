@@ -5,6 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+    <div>
+            <a style="height:76px" href="{% url 'add-book' %}"><button class="button" style="--c: #373B44;--b: 5px;--s:12px">Add_Book</button></a>
+    </div>
     <table>
         <tr>
             <th>Name</th>
@@ -15,5 +18,8 @@
             <th>UPDATE</th>
         </tr>
     </table>
+    <div>
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    </div>
 </body>
 </html>
