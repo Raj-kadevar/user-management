@@ -29,7 +29,7 @@
             {% if book.creator == request.user %}
 
             <td> <a href="{% url 'delete' book.id %}"><button>delete</button></a></td>
-            <td> <a href="{% url 'update' book.id %}"><button>delete</button></a></td>
+            <td> <a href="{% url 'update' book.id %}"><button>update</button></a></td>
 
             {% endif %}
         </tr>

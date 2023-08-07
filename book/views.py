@@ -25,7 +25,6 @@ class LoginView(View):
 def index(request):
     if request.user.is_authenticated :
         books = Book.objects.all()
-        print(books)
         return render(request, "book/index.html",{"books":books})
     else:
         return redirect("login")
@@ -54,4 +53,8 @@ class BookView(View):
             errors = book.errors
             return render(request, "book/book_form.html", {"form": book, "errors":errors})
 
+def delete(request, id):
+    pass
 
+def update(request, id):
+    pass
