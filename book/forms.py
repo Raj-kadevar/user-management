@@ -15,8 +15,10 @@ class BookCreation(forms.ModelForm):
             raise forms.ValidationError("price must be between 11 to 10,000")
         return price
 
-    # def clean_creator(self):
-    #     creator = self.cleaned_data['creator']
-    #     if creator is not :
-    #         raise forms.ValidationError("creator not matched")
-    #     return  creator
+
+class UpdateFrom(forms.ModelForm):
+
+
+    class Meta:
+        model = Book
+        fields = ["price"]

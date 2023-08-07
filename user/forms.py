@@ -33,6 +33,7 @@ class RegistrationForm(forms.ModelForm):
                 raise forms.ValidationError("This number is already taken.")
         return number
 
+
 class UpdateForm(forms.ModelForm):
     class Meta:
         model = UserEmployee

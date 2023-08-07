@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render,redirect
 from django.views import View
 
-from book.forms import BookCreation
+from book.forms import BookCreation, UpdateFrom
 from book.models import Book
 
 
@@ -54,7 +55,23 @@ class BookView(View):
             return render(request, "book/book_form.html", {"form": book, "errors":errors})
 
 def delete(request, id):
-    pass
+    try:
+        book = Book.objects.get(id=id)
+        book.delete()
+    except ObjectDoesNotExist:
+        return HttpResponse("<h2>404 page not found</h2>")
+    return redirect("index")
+
 
 def update(request, id):
-    pass
+    try:
+        book = Book.objects.get(id=id)
+    except ObjectDoesNotExist:
+        return HttpResponse("<h2>404 page not found</h2>")
+
+    if request.method == "POST":
+        book = UpdateFrom(request.POST,instance=book)
+        book.save()
+        return redirect("index")
+    return render(request, "book/update.html", {"book": book})
+
