@@ -1,6 +1,8 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
+    <link href="{%static 'css/index.css'%}" rel="stylesheet" type="text/css" media="all" />
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
@@ -17,6 +19,21 @@
             <th>DELETE</th>
             <th>UPDATE</th>
         </tr>
+         {% for book in books %}
+        <tr>
+            <td>{{book.name}}</td>
+            <td>{{book.price}}</td>
+            <td>{{book.creator}}</td>
+            <td>{{book.author}}</td>
+
+            {% if book.creator == request.user %}
+
+            <td> <a href="{% url 'delete' book.id %}"><button>delete</button></a></td>
+            <td> <a href="{% url 'update' book.id %}"><button>delete</button></a></td>
+
+            {% endif %}
+        </tr>
+        {% endfor %}
     </table>
     <div>
         <a href="{% url 'logout' %}"><button>Logout</button></a>

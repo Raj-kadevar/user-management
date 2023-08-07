@@ -4,6 +4,7 @@ from django.shortcuts import render,redirect
 from django.views import View
 
 from book.forms import BookCreation
+from book.models import Book
 
 
 class LoginView(View):
@@ -23,7 +24,9 @@ class LoginView(View):
 
 def index(request):
     if request.user.is_authenticated :
-        return render(request, "book/index.html")
+        books = Book.objects.all()
+        print(books)
+        return render(request, "book/index.html",{"books":books})
     else:
         return redirect("login")
 

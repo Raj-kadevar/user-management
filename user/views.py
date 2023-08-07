@@ -8,7 +8,7 @@ from user.models import UserEmployee
 
 class UserView(CreateView):
 
-    model = UserEmployeeAUTH_USER_MODEL = "book."
+    model = UserEmployee
     form_class = RegistrationForm
     template_name = 'user/form.html'
 
