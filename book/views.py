@@ -37,8 +37,8 @@ def on_logout(request):
 
 class CreateBook(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
-        form = BookCreation
-        return render(request, "book/book_form.html",{"form":form})
+        form = BookCreation()
+        return render(request, "book/book_form.html",{"Book":form})
 
     def post(self, request, *args, **kwargs):
         book = BookCreation(request.POST)
@@ -58,9 +58,8 @@ class DeleteBook(LoginRequiredMixin,DeleteView):
 
 
 class UpdateBook(LoginRequiredMixin,UpdateView):
-    model = Book
-    fields = ["price"]
+    form_class = BookCreation
     template_name = "book/update.html"
     success_url = reverse_lazy("index")
-
+    queryset = Book.objects.all()
 

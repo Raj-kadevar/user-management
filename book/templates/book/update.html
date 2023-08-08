@@ -6,7 +6,7 @@
 <body>
     <form action="{% url 'updatebook' book.id %}" method="POST">
      {% csrf_token %}
-        price:<input type="number" step="0.01" value="{{book.price}}" name="price"><br><br>
+        {{form.as_p}}
         <input type="submit" value="submit">
     </form>
 </body>

@@ -24,18 +24,18 @@
 				<form method="post">
 					{% csrf_token %}
 					Book_name:
-					<h3>{{form.name}}</h3></br>
+					<h3>{{book.name}}</h3></br>
 					<h2 style="color:red">{{errors.name}}</h2>
 
 					price:
-					<h3>{{form.price}}</h3></br>
+					<h3>{{book.price}}</h3></br>
 					<h2 style="color:red">{{errors.price}}</h2>
 
 					creator_name:
-					<h3>{{form.creator}}</h3></br>
+					<h3>{{book.creator}}</h3></br>
 
 					author_name:
-					<h3>{{form.author}}</h3></br>
+					<h3>{{book.author}}</h3></br>
 
 					<div class="links">
 						back to home -->
