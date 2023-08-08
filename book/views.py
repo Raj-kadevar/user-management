@@ -1,12 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render,redirect
-from django.views import View
-from django.views.generic import DeleteView, UpdateView, DetailView
-
-from book.forms import BookCreation, UpdateFrom
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView, UpdateView, ListView, View
+from book.forms import BookCreation
 from book.models import Book
 
 
@@ -24,12 +22,12 @@ class LoginView(View):
             error = "Username or password incorrect"
             return render(request, "book/login.html", {"errors": error})
 
-class DetailBook(LoginRequiredMixin,DetailView):
+class DetailBook(LoginRequiredMixin,ListView):
     model = Book
-
-    def get(self, request, *args, **kwargs):
-         books = Book.objects.all()
-         return render(request, "book/index.html", {"books": books})
+    template_name = "book/index.html"
+    def get_context_data(self, *, object_list=None, **kwargs):
+        books = Book.objects.all()
+        return {"books": books}
 
 def on_logout(request):
     logout(request)
@@ -39,9 +37,6 @@ def on_logout(request):
 
 class CreateBook(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
-        if not request.user.is_authenticated :
-            return redirect("login")
-
         form = BookCreation
         return render(request, "book/book_form.html",{"form":form})
 
@@ -56,9 +51,6 @@ class CreateBook(LoginRequiredMixin,View):
 
 
 class DeleteBook(LoginRequiredMixin,DeleteView):
-    model = Book
-
-
     def get(self, request, *args, **kwargs):
         book = Book.objects.get(id=kwargs.get("book_id"))
         book.delete()
@@ -68,15 +60,7 @@ class DeleteBook(LoginRequiredMixin,DeleteView):
 class UpdateBook(LoginRequiredMixin,UpdateView):
     model = Book
     fields = ["price"]
-    def get(self, request, *args, **kwargs):
-        book = Book.objects.get(id=kwargs.get("id"))
-        return render(request, "book/update.html", {"book": book})
+    template_name = "book/update.html"
+    success_url = reverse_lazy("index")
 
-    def post(self, request, *args, **kwargs):
-        if request.method == "POST":
-            book = Book.objects.get(id=kwargs.get("id"))
-            book_update = UpdateFrom(request.POST, instance=book)
-            book_update.save()
-            return redirect("index")
-        return render(request, "book/update.html", {"book": book})
 
