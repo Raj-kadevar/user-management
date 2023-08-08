@@ -1,12 +1,13 @@
 from django.urls import path
+from .views import DetailBook, LoginView, DeleteBook, UpdateBook, CreateBook
 from book import views
 from user import views as user
 urlpatterns = [
-    path('',views.LoginView.as_view(), name="login"),
+    path('',LoginView.as_view(), name="login"),
     path('logout/',views.on_logout,name="logout"),
-    path('index/',views.index,name="index"),
-    path("delete/<int:id>/",views.delete,name="delete"),
-    path("update/<int:id>/",views.update,name="update"),
-    path('add_book/',views.BookView.as_view(),name="add-book"),
+    path('index/',DetailBook.as_view(),name="index"),
+    path("deletebook/<int:book_id>/",DeleteBook.as_view(),name="deletebook"),
+    path("updatebook/<int:id>/",UpdateBook.as_view(),name="updatebook"),
+    path('add_book/',CreateBook.as_view(),name="add-book"),
     path('registration_form/',user.UserView.as_view(),name="add-user"),
 ]

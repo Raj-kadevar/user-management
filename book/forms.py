@@ -3,8 +3,6 @@ from book.models import Book
 
 
 class BookCreation(forms.ModelForm):
-
-
     class Meta:
         model = Book
         fields = ["name", "price", "creator", "author"]
@@ -17,8 +15,6 @@ class BookCreation(forms.ModelForm):
 
 
 class UpdateFrom(forms.ModelForm):
-
-
     class Meta:
         model = Book
         fields = ["price"]

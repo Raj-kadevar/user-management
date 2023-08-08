@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render,redirect
 from django.views import View
+from django.views.generic import DeleteView, UpdateView, DetailView
 
 from book.forms import BookCreation, UpdateFrom
 from book.models import Book
@@ -22,14 +24,12 @@ class LoginView(View):
             error = "Username or password incorrect"
             return render(request, "book/login.html", {"errors": error})
 
+class DetailBook(LoginRequiredMixin,DetailView):
+    model = Book
 
-def index(request):
-    if request.user.is_authenticated :
-        books = Book.objects.all()
-        return render(request, "book/index.html",{"books":books})
-    else:
-        return redirect("login")
-
+    def get(self, request, *args, **kwargs):
+         books = Book.objects.all()
+         return render(request, "book/index.html", {"books": books})
 
 def on_logout(request):
     logout(request)
@@ -37,7 +37,7 @@ def on_logout(request):
 
 
 
-class BookView(View):
+class CreateBook(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated :
             return redirect("login")
@@ -54,24 +54,29 @@ class BookView(View):
             errors = book.errors
             return render(request, "book/book_form.html", {"form": book, "errors":errors})
 
-def delete(request, id):
-    try:
-        book = Book.objects.get(id=id)
+
+class DeleteBook(LoginRequiredMixin,DeleteView):
+    model = Book
+
+
+    def get(self, request, *args, **kwargs):
+        book = Book.objects.get(id=kwargs.get("book_id"))
         book.delete()
-    except ObjectDoesNotExist:
-        return HttpResponse("<h2>404 page not found</h2>")
-    return redirect("index")
-
-
-def update(request, id):
-    try:
-        book = Book.objects.get(id=id)
-    except ObjectDoesNotExist:
-        return HttpResponse("<h2>404 page not found</h2>")
-
-    if request.method == "POST":
-        book = UpdateFrom(request.POST,instance=book)
-        book.save()
         return redirect("index")
-    return render(request, "book/update.html", {"book": book})
+
+
+class UpdateBook(LoginRequiredMixin,UpdateView):
+    model = Book
+    fields = ["price"]
+    def get(self, request, *args, **kwargs):
+        book = Book.objects.get(id=kwargs.get("id"))
+        return render(request, "book/update.html", {"book": book})
+
+    def post(self, request, *args, **kwargs):
+        if request.method == "POST":
+            book = Book.objects.get(id=kwargs.get("id"))
+            book_update = UpdateFrom(request.POST, instance=book)
+            book_update.save()
+            return redirect("index")
+        return render(request, "book/update.html", {"book": book})
 
