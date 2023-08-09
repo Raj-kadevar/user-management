@@ -24,8 +24,11 @@
             <td>{{book.name}}</td>
             <td>{{book.price}}</td>
             <td>{{book.creator}}</td>
-            <td>{{book.author}}</td>
-
+            <td>
+            {% for author in book.author.all %}
+                {{author}}
+            {% endfor %}
+            </td>
             {% if book.creator == request.user or book.author == request.user%}
             <td> <a href="{% url 'deletebook' book.id %}"><button>Delete</button></a></td>
             <td> <a href="{% url 'updatebook' book.id %}"><button>Update</button></a></td>

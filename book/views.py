@@ -38,7 +38,7 @@ def on_logout(request):
 class CreateBook(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         form = BookCreation()
-        return render(request, "book/book_form.html",{"Book":form})
+        return render(request, "book/book_form.html",{"book":form})
 
     def post(self, request, *args, **kwargs):
         book = BookCreation(request.POST)
