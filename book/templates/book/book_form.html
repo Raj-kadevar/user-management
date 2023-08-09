@@ -23,30 +23,26 @@
 			<div class="agileits-top">
 				<form method="post">
 					{% csrf_token %}
-					name:
-					<h3>{{form.username}}</h3></br>
+					Book_name:
+					<h3>{{book.name}}</h3></br>
 					<h2 style="color:red">{{errors.name}}</h2>
-					Email:
-					<h3>{{form.email}}</h3></br>
-					<h2 style="color:red">{{errors.email}}</h2>
-					password:
-					<input type="password" name='{{form.password.html_name}}' required=""/></br>
-					<h2 style="color:red">{{errors.password}}</h2>
-					confirm_password
-					<input type="password" name='{{form.confirm_password.html_name}}' required=""/></br>
-					<h2 style="color:red">{{errors.confirm_password}}</h2>
-					number:
-					<input type="text" name="{{form.phone_number.html_name}}" required=""/></br>
-					<h2 style="color:red">{{errors.phone_number}}</h2>
-					Address:
-					<h3>{{form.address}}</h3></br>
+
+					price:
+					<h3>{{book.price}}</h3></br>
+					<h2 style="color:red">{{errors.price}}</h2>
+
+					creator_name:
+					<h3>{{book.creator}}</h3></br>
+
+					author_name:
+					<h3>{{book.author}}</h3></br>
 
 					<div class="links">
-						Already have an account -->
-              			<a href="{% url 'login' %}">Signin</a>
+						back to home -->
+              			<a href="{% url 'index' %}">Home</a>
             		</div>
 
-					<input type="submit" value="Submit">
+					<input type="submit" value="Create">
 				</form>
 			</div>
 		</div>

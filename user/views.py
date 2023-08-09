@@ -21,8 +21,8 @@ class UserView(CreateView):
             return render(request, "book/login.html")
 
         else:
-            error = user.errors
-            return render(request, "user/form.html", {"errors": error, "form": user})
+            errors = user.errors
+            return render(request, "user/form.html", {"errors": errors, "form": user})
 
 
 def index(request):
