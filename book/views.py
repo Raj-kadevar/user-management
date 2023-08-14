@@ -1,6 +1,8 @@
+from dataclasses import _is_dataclass_instance
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView, ListView, View
@@ -27,7 +29,8 @@ class DetailBook(LoginRequiredMixin,ListView):
     template_name = "book/index.html"
     def get_context_data(self, *, object_list=None, **kwargs):
         books = Book.objects.all()
-        return {"books": books}
+        book_authors = BookCreation()
+        return {"books": books,"book_authors":book_authors}
 
 def on_logout(request):
     logout(request)
@@ -62,4 +65,21 @@ class UpdateBook(LoginRequiredMixin,UpdateView):
     template_name = "book/update.html"
     success_url = reverse_lazy("index")
     queryset = Book.objects.all()
+
+
+class AddAuthor(UpdateView):
+
+    form_class = BookCreation
+    template_name = "book/index.html"
+    success_url = reverse_lazy("index")
+    queryset = Book.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        breakpoint()
+        authors = Book.objects.get(id=kwargs.get("pk"))
+        author_list = self.request.POST.getlist('authors[]')
+        object = Book.objects.filter(id__in=[int(i) for i in author_list])
+        authors.author = object
+        authors.save()
+        return JsonResponse({"status":"success"})
 
