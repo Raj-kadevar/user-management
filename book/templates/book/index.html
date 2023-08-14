@@ -24,7 +24,7 @@
         </tr>
          {% for book in books %}
         <tr>
-            <td><input type="checkbox" class="book_id" data-book-id="{{book.id}}" onclick="update_author(this)" id="checkbox"></td>
+            <td><input type="checkbox" class="book_id" data-book-id="{{book.id}}" onclick="show_modal(this)" id="checkbox"></td>
             <td>{{book.name}}</td>
             <td>{{book.price}}</td>
             <td>{{book.creator}}</td>
@@ -60,8 +60,8 @@
         </div>
 
                 <div class="modal-footer">
-                    <button id="">remove</button>
-                    <button onclick="add_author()">add</button>
+                    <button id="remove" onclick="manage_author(this.id)">remove</button>
+                    <button id="add" onclick="manage_author(this.id)">add</button>
                     <button id="close" >Close</button>
                 </div>
 
@@ -80,41 +80,37 @@
     var exit = document.getElementById("close");
     exit.onclick = function()
     {
-        $("#checkbox").prop("checked", false);
+        $(checkbox_status).prop("checked", false);
         modal.style.display = "none"
-
     }
 
-    function update_author(book){
+    function show_modal(book){
         book_id = book.getAttribute("data-book-id")
+        checkbox_status = book
         modal.style.display = "block";
-
-
-        $(book).prop("checked", false);
     }
 
-    function add_author(){
-        var url = "{% url 'add_author' 1 %}"
+    function manage_author(status_id){
+
+        var url = "{% url 'manage_author' 1 %}"
         myurl = url.replace('1', book_id);
         author = $('#authors :selected').map(function(i, author_id) {
             return parseInt($(author_id).val());
         }).get()
-        console.log(author)
 
         $.ajax({
             type:"POST",
             headers: {'X-CSRFToken': '{{ csrf_token }}'},
             url : myurl,
-            data:{"authors":author},
+            data:{"authors":author,"status":status_id},
             success:function(data){
                 if(data.status){
+                    $(checkbox_status).prop("checked", false);
                     document.location.href = {% url 'index' %}
                 }
             },
             error:function(data){
-                if(data.err){
-                    console.log("error")
-                }
+                console.log("Error in ajax request")
             }
         })
     }

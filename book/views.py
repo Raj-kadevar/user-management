@@ -1,4 +1,3 @@
-from dataclasses import _is_dataclass_instance
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView, ListView, View
 from book.forms import BookCreation
 from book.models import Book
+from user.models import UserEmployee
 
 
 class LoginView(View):
@@ -67,7 +67,7 @@ class UpdateBook(LoginRequiredMixin,UpdateView):
     queryset = Book.objects.all()
 
 
-class AddAuthor(UpdateView):
+class ManageAuthor(UpdateView):
 
     form_class = BookCreation
     template_name = "book/index.html"
@@ -75,11 +75,14 @@ class AddAuthor(UpdateView):
     queryset = Book.objects.all()
 
     def post(self, request, *args, **kwargs):
-        breakpoint()
         authors = Book.objects.get(id=kwargs.get("pk"))
         author_list = self.request.POST.getlist('authors[]')
-        object = Book.objects.filter(id__in=[int(i) for i in author_list])
-        authors.author = object
-        authors.save()
+        selected_authors = UserEmployee.objects.filter(id__in=[int(id) for id in author_list])
+
+        if request.POST.get('status') == 'add':
+            selected_authors = selected_authors | authors.author.all()
+            authors.author.set(selected_authors)
+        else:
+            authors.author.remove(*selected_authors)
         return JsonResponse({"status":"success"})
 
