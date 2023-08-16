@@ -45,12 +45,13 @@ class CreateBook(LoginRequiredMixin,View):
 
     def post(self, request, *args, **kwargs):
         book = BookCreation(request.POST)
+
         if book.is_valid():
             book.save()
             return redirect("index")
         else:
             errors = book.errors
-            return render(request, "book/book_form.html", {"form": book, "errors":errors})
+            return render(request, "book/book_form.html", {"book": book, "errors":errors})
 
 
 class DeleteBook(LoginRequiredMixin,DeleteView):

@@ -92,7 +92,7 @@
 
     function manage_author(status_id){
 
-        var url = "{% url 'manage_author' 1 %}"
+        var url = "{% url 'manage_author' 1 %}";
         myurl = url.replace('1', book_id);
         author = $('#authors :selected').map(function(i, author_id) {
             return parseInt($(author_id).val());

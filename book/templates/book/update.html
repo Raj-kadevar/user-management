@@ -2,11 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <style> span{color:red}</style>
 </head>
 <body>
+    <h2>Update BookForm</h2>
     <form action="{% url 'updatebook' book.id %}" method="POST">
      {% csrf_token %}
-        {{form.as_p}}
+
+        <h3>{{ form.name.label }} {{form.name}}</h3>
+        <span>{{form.errors.name}}</span>
+        <h3>{{ form.price.label }} {{form.price}}</h3>
+        <span>{{form.errors.price}}</span>
+        <h3>{{ form.creator.label }} {{form.creator}}</h3>
+        <span>{{form.errors.creator}}</span>
+        <h3>{{ form.author.label }} {{form.author}}</h3>
+        <span>{{form.errors.author}}</span>
+
         <input type="submit" value="submit">
     </form>
 </body>
