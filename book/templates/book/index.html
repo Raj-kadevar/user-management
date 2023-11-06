@@ -2,9 +2,11 @@
 {% load static %}
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{%static 'css/index.css'%}" rel="stylesheet" type="text/css" media="all" />
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 </head>
 <body>
     <div>
@@ -12,6 +14,7 @@
     </div>
     <table>
         <tr>
+            <th>row</th>
             <th>Name</th>
             <th>Price</th>
             <th>Creator</th>
@@ -21,11 +24,15 @@
         </tr>
          {% for book in books %}
         <tr>
+            <td><input type="checkbox" class="book_id" data-book-id="{{book.id}}" onclick="show_modal(this)" id="checkbox"></td>
             <td>{{book.name}}</td>
             <td>{{book.price}}</td>
             <td>{{book.creator}}</td>
-            <td>{{book.author}}</td>
-
+            <td>
+            {% for author in book.author.all %}
+                {{author}} ,
+            {% endfor %}
+            </td>
             {% if book.creator == request.user or book.author == request.user%}
             <td> <a href="{% url 'deletebook' book.id %}"><button>Delete</button></a></td>
             <td> <a href="{% url 'updatebook' book.id %}"><button>Update</button></a></td>
@@ -37,5 +44,74 @@
     <div>
         <a href="{% url 'logout' %}"><button>Logout</button></a>
     </div>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <h2>Author_details</h2>
+        </div>
+
+        <div class="modal-body">
+            <form>
+					{% csrf_token %}
+                    <h5 id="authors">{{book_authors.author}}</h5>
+            </form>
+        </div>
+
+                <div class="modal-footer">
+                    <button id="remove" onclick="manage_author(this.id)">remove</button>
+                    <button id="add" onclick="manage_author(this.id)">add</button>
+                    <button id="close" >Close</button>
+                </div>
+
+
+      </div>
+    </div>
 </body>
+
 </html>
+
+
+
+
+<script type="text/javascript">
+    var modal = document.querySelector(".modal");
+    var exit = document.getElementById("close");
+    exit.onclick = function()
+    {
+        $(checkbox_status).prop("checked", false);
+        modal.style.display = "none"
+    }
+
+    function show_modal(book){
+        book_id = book.getAttribute("data-book-id")
+        checkbox_status = book
+        modal.style.display = "block";
+    }
+
+    function manage_author(status_id){
+
+        var url = "{% url 'manage_author' 1 %}";
+        myurl = url.replace('1', book_id);
+        author = $('#authors :selected').map(function(i, author_id) {
+            return parseInt($(author_id).val());
+        }).get()
+
+        $.ajax({
+            type:"POST",
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            url : myurl,
+            data:{"authors":author,"status":status_id},
+            success:function(data){
+                if(data.status){
+                    $(checkbox_status).prop("checked", false);
+                    document.location.href = {% url 'index' %}
+                }
+            },
+            error:function(data){
+                console.log("Error in ajax request")
+            }
+        })
+    }
+</script>

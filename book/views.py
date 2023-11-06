@@ -1,11 +1,13 @@
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse_lazy
 from django.views.generic import DeleteView, UpdateView, ListView, View
 from book.forms import BookCreation
 from book.models import Book
+from user.models import UserEmployee
 
 
 class LoginView(View):
@@ -27,7 +29,8 @@ class DetailBook(LoginRequiredMixin,ListView):
     template_name = "book/index.html"
     def get_context_data(self, *, object_list=None, **kwargs):
         books = Book.objects.all()
-        return {"books": books}
+        book_authors = BookCreation()
+        return {"books": books,"book_authors":book_authors}
 
 def on_logout(request):
     logout(request)
@@ -38,16 +41,17 @@ def on_logout(request):
 class CreateBook(LoginRequiredMixin,View):
     def get(self, request, *args, **kwargs):
         form = BookCreation()
-        return render(request, "book/book_form.html",{"Book":form})
+        return render(request, "book/book_form.html",{"book":form})
 
     def post(self, request, *args, **kwargs):
         book = BookCreation(request.POST)
+
         if book.is_valid():
             book.save()
             return redirect("index")
         else:
             errors = book.errors
-            return render(request, "book/book_form.html", {"form": book, "errors":errors})
+            return render(request, "book/book_form.html", {"book": book, "errors":errors})
 
 
 class DeleteBook(LoginRequiredMixin,DeleteView):
@@ -62,4 +66,24 @@ class UpdateBook(LoginRequiredMixin,UpdateView):
     template_name = "book/update.html"
     success_url = reverse_lazy("index")
     queryset = Book.objects.all()
+
+
+class ManageAuthor(UpdateView):
+
+    form_class = BookCreation
+    template_name = "book/index.html"
+    success_url = reverse_lazy("index")
+    queryset = Book.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        authors = Book.objects.get(id=kwargs.get("pk"))
+        author_list = self.request.POST.getlist('authors[]')
+        selected_authors = UserEmployee.objects.filter(id__in=[int(id) for id in author_list])
+
+        if request.POST.get('status') == 'add':
+            selected_authors = selected_authors | authors.author.all()
+            authors.author.set(selected_authors)
+        else:
+            authors.author.remove(*selected_authors)
+        return JsonResponse({"status":"success"})
 
